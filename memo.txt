@@ -1,0 +1,35 @@
+#virtual environment
+C:\Users\general\Documents\05_webdev\django_env1\Scripts\activate.bat
+
+#start web server
+manage.py runserver
+
+
+#sysnDB
+python manage.py migrate
+
+
+#password forgot
+if you forgot django password, you can create a new superuser by
+manage.py createsuperuser
+
+#debug method:
+In Run configurations,add [runserver] to parameter
+
+
+#python interactive environment
+import os
+import django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "DjangoBlog.settings")
+django.setup()
+
+
+
+
+
+-------------------django coding
+# object clone
+obj = Foo.objects.get(pk=<some_existing_pk>)
+obj.pk = None
+obj.save()
+
