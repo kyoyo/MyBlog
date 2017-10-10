@@ -1,0 +1,34 @@
+<section id="comments" class="themeform">
+    {% load blog_tags %}
+    {% load comment_tags %}
+
+    {% if article_comments %}
+    <div id="commentlist-container" class="comment-tab" style="display: block;">
+
+        <ol class="commentlist">
+            {% query article_comments parent_comment=None as parent_comments %}
+            {% for comment in parent_comments %}
+            {% show_comment_item comment False %}
+
+            {% parse_commenttree article_comments comment as childcomments %}
+            {% if childcomments %}
+            <ul class="children">
+                {% for child in childcomments %}
+                {% show_comment_item child True %}
+
+                {% endfor %}
+            </ul><!-- .children -->
+            {% endif %}
+
+
+            {% endfor %}
+
+        </ol><!--/.commentlist-->
+
+
+    </div>
+
+    {% endif %}
+
+
+</section>

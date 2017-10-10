@@ -1,14 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>index</title>
-</head>
-<body>
-hello,kyo<br>
+{% extends 'base.html' %}
+{% load blog_tags %}
+{% block header %}
 
-{% for article in article_list %}
-    {{article.title}}:{{article.body}}<br>
-{% endfor %}
-</body>
-</html>
+{% endblock %}
+
+{% block content %}
+<div id="primary" class="site-content">
+    <div id="content" role="main">
+    {% for article in article_list %}
+        {% load_article_detail article True %}
+    {% endfor %}
+
+    {% if is_paginated %}
+        <nav id="nav-below" class="navigation" role="navigation">
+            <h3 class="assistive-text">文章导航</h3>
+            {% if page_obj.has_next %}
+                <div class="nav-previous"><a
+                        href="{{ SITE_BASE_URL }}page/{{ page_obj.next_page_number }}"><span
+                        class="meta-nav">&larr;</span> 早期文章</a></div>
+            {% endif %}
+            {% if page_obj.has_previous %}
+                <div class="nav-next"><a href="{{ SITE_BASE_URL }}page/{{ page_obj.previous_page_number }}">较新文章
+                    <span class="meta-nav">→</span></a>
+                </div>
+            {% endif %}
+        </nav><!-- .navigation -->
+
+    </div><!-- #content -->
+</div><!-- #primary -->
+    {% endif %}
+{% endblock %}
+
+{% block sidebar %}
+{% load_sidebar request.user %}
+{% endblock %}
