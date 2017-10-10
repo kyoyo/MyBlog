@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.core.urlresolvers import reverse
 
 # Create your models here.
 
@@ -35,8 +36,37 @@ class Article(models.Model):
     category = models.ForeignKey('Category',verbose_name='分类',on_delete=models.CASCADE,blank=True,null=True)
     tags = models.ManyToManyField('Tag',verbose_name='标签集合',blank=True,null=True)
 
+    class Meta:
+        ordering = ['-pub_time']
+        verbose_name = '文章'
+        verbose_name_plural ='文章'
+
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:detail',kwargs={
+            'article_id':self.id,
+            'year':self.create_time.year,
+            'month':self.create_time.month,
+            'day':self.create_time.day
+        })
+
+    def viewed(self):
+        self.views += 1
+        self.save(update_fields=['views'])
+
+
+    def get_category_tree(self):
+
+        names = []
+        def parse(category):
+            names.append((category.name,category.get_absolute_url()))
+            if category.parent_category:
+                parse(category.parent_category)
+        parse(self.category)
+
+        return names
 
 
 class Category(models.Model):
@@ -48,6 +78,14 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = '分类'
+        verbose_name_plural ='分类'
+
+    def get_absolute_url(self):
+
+        return reverse('blog:category_detail',kwargs={'category_name':self.name})
+
 
 class Tag(models.Model):
     name = models.CharField('标签名', max_length=30)
@@ -56,6 +94,10 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = '标签'
+        verbose_name_plural ='标签'
 
 
 class Links(models.Model):

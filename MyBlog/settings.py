@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'accounts',
+    'comments',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'blog.context_processors.seo_processor',
             ],
         },
     },
@@ -77,11 +81,11 @@ WSGI_APPLICATION = 'MyBlog.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'MyBlog.db'),
     }
 }
 
-AUTH_USER_MODEL='auth.User'
+AUTH_USER_MODEL='accounts.BlogUser'
 
 
 # Password validation
@@ -106,9 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -116,8 +120,47 @@ USE_L10N = True
 
 USE_TZ = True
 
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_TIME_FORMAT = '%Y-%m-%d'
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
+#MEDIA_ROOT = 'media'
+#MEDIA_URL = '/media/'
+
+STATICFILES = os.path.join(BASE_DIR, 'static')
+
+# 侧边栏文章数目
+SIDEBAR_ARTICLE_COUNT = 10
+
+SITE_NAME = '且听风吟'
+SITE_URL = '127.0.0.1:8000'
+SITE_DESCRIPTION = '大巧无工,重剑无锋.'
+SITE_SEO_DESCRIPTION = '小站主要用来分享和记录学习经验,教程,记录个人生活的点滴以及一些随笔.欢迎大家访问小站'
+ARTICLE_SUB_LENGTH = 50
+
+PAGINATE_BY = 2
+
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other
+    'compressor.finders.CompressorFinder',
+)
+COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
+
+COMPRESS_CSS_FILTERS = [
+    # creates absolute urls from relative ones
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    # css minimizer
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
+]
