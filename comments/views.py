@@ -12,11 +12,11 @@ class CommentPostView(FormView):
     form_class = CommentForm
     template_name = 'blog/articledetail.html'
 
-    def get(self, request, *args, **kwargs):
-        article_id = self.kwargs['article_id']
-        url = reverse('blog:detail',kwargs={'article_id':article_id})
-
-        return HttpResponseRedirect(url)
+    # def get(self, request, *args, **kwargs):
+    #     article_id = self.kwargs['article_id']
+    #     url = reverse('blog:detail',kwargs={'article_id':article_id})
+    #
+    #     return HttpResponseRedirect(url)
 
     def form_invalid(self, form):
         article_id = self.kwargs['article_id']

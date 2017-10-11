@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'haystack',
     'blog',
     'accounts',
     'comments',
@@ -134,13 +135,24 @@ STATIC_URL = '/static/'
 
 STATICFILES = os.path.join(BASE_DIR, 'static')
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'MyBlog.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}
+# 自动更新搜索索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+
+
 # 侧边栏文章数目
 SIDEBAR_ARTICLE_COUNT = 10
 
 SITE_NAME = '且听风吟'
 SITE_URL = '127.0.0.1:8000'
 SITE_DESCRIPTION = '大巧无工,重剑无锋.'
-SITE_SEO_DESCRIPTION = '小站主要用来分享和记录学习经验,教程,记录个人生活的点滴以及一些随笔.欢迎大家访问小站'
+SITE_SEO_DESCRIPTION = '小站主要用来分享F和记录学习经验,教程,记录个人生活的点滴以及一些随笔.欢迎大家访问小站'
 ARTICLE_SUB_LENGTH = 50
 
 PAGINATE_BY = 2

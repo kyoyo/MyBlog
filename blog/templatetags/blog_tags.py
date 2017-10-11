@@ -12,10 +12,11 @@ import datetime
 register = template.Library()
 
 @register.inclusion_tag('blog/tags/article_info.html')
-def load_article_detail(article,isindex):
+def load_article_detail(article,isindex,user):
     return {
         'article':article,
-        'isindex':isindex
+        'isindex':isindex,
+        'user':user
     }
 
 @register.inclusion_tag('blog/tags/sidebar.html')

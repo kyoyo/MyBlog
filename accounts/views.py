@@ -37,6 +37,43 @@ class LoginView(FormView):
     success_url = '/'
     redirect_field_name = REDIRECT_FIELD_NAME
 
+###
+#as_view
+#dispatch
+#get
+#get_form
+#get_form_class
+#get_form_kwargs
+#get_initial
+#get_prefix
+#get_template_names
+#http_method_not_allowed
+#options
+#post
+#put
+#render_to_response
+#
+#
+#
+#
+#
+###
+
+
+#-------------method test start-------------------#
+    def get(self, request, *args, **kwargs):
+        print('--------get method called')
+
+        return super(LoginView,self).get(request,*args, **kwargs)
+
+    def get_form(self, form_class=None):
+        pass
+
+    def get_initial(self):
+        pass
+
+
+    #-------------method test end-------------------#
     def form_valid(self,form):
         form = AuthenticationForm(request= self.request,data=self.request.POST)
 
@@ -56,7 +93,7 @@ class LoginView(FormView):
         if redirect_to is None:
             redirect_to = '/'
         kwargs['redirect_to'] = redirect_to
-
+        kwargs['test_name'] = 'kyo'
         return super(LoginView,self).get_context_data(**kwargs)
 
     def get_success_url(self):
